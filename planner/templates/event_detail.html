@@ -1,0 +1,10 @@
+{% extends "planner/base.html" %}
+{% block content %}
+  <article>
+    <h2>{{ event.title }}</h2>
+    <p><strong>Дата:</strong> {{ event.date }} {{ event.time }}</p>
+    <p><strong>Место:</strong> {{ event.location }}</p>
+    <p>{{ event.description }}</p>
+    <a href="{% url 'planner:index' %}">Назад к списку</a>
+  </article>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "planner/base.html" %}
+{% block content %}
+  <section class="hero">
+    <h2>Планирование событий</h2>
+    <p>Настройки уведомлений: <strong>{{ settings.notifications|yesno:"Включены,Выключены" }}</strong></p>
+  </section>
+
+  <section class="events">
+    {% for event in events %}
+      <article class="event-card">
+        <img src="{% static 'planner/images/event-placeholder.jpg' %}" alt="poster">
+        <h3><a href="{% url 'planner:event_detail' event.id %}">{{ event.title }}</a></h3>
+        <p>{{ event.date }} в {{ event.time }} — {{ event.location }}</p>
+      </article>
+    {% endfor %}
+  </section>
+{% endblock %}

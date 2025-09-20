@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="{{ settings.language|default:'ru' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EventPlanner</title>
+  <link rel="stylesheet" href="{% static 'planner/css/styles.css' %}">
+</head>
+<body class="theme-{{ settings.theme|default:'light' }}">
+  <header class="site-header">
+    <h1><a href="{% url 'planner:index' %}">EventPlanner</a></h1>
+    <nav>
+      <a href="{% url 'planner:index' %}">События</a> |
+      <a href="{% url 'planner:settings' %}">Настройки</a>
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <small>EventPlanner — демонстрационный проект</small>
+  </footer>
+</body>
+</html>
