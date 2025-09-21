@@ -1,10 +1,17 @@
 {% extends "planner/base.html" %}
+{% load static %}
+{% block title %}{{ event.title }}{% endblock %}
 {% block content %}
   <article>
-    <h2>{{ event.title }}</h2>
-    <p><strong>Дата:</strong> {{ event.date }} {{ event.time }}</p>
+    <h1>{{ event.title }}</h1>
+    <p><strong>Дата:</strong> {{ event.date_time|date:"Y-m-d H:i" }}</p>
     <p><strong>Место:</strong> {{ event.location }}</p>
     <p>{{ event.description }}</p>
-    <a href="{% url 'planner:index' %}">Назад к списку</a>
+    <p>
+      <a href="{% url 'planner:event_edit' event.pk %}">Редактировать</a> |
+      <a href="{% url 'planner:event_delete' event.pk %}">Удалить</a> |
+      <a href="{% url 'planner:index' %}">← К списку</a>
+    </p>
   </article>
 {% endblock %}
+

@@ -1,12 +1,12 @@
 {% extends "planner/base.html" %}
+{% load static %}
 {% block content %}
   <h2>Настройки пользователя</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Сохранить</button>
-  </form>
-  <div class="hint">
-    <p>Текущие настройки: тема — <strong>{{ settings.theme }}</strong>, язык — <strong>{{ settings.language }}</strong>, уведомления — <strong>{{ settings.notifications|yesno:"да,нет" }}</strong>.</p>
-  </div>
+    <button type="submit">Сохранить настройки</button>
+</form>
+<p><a href="{% url 'planner:index' %}">Вернуться на главную</a></p>
 {% endblock %}
+

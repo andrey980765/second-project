@@ -2,7 +2,7 @@
 body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f7f7f7; color:#222; }
 .site-header { background:#222; color:white; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; }
 .site-header a { color: #fff; text-decoration:none; }
-.hero { padding: 20px; background: linear-gradient(90deg,#f0f0f0,#ffffff); }
+.hero { padding: 20px; background: linear-gradient(90deg,#6416e0,#41008b); }
 
 .events { display:flex; gap:16px; padding:20px; flex-wrap:wrap; }
 .event-card { width: 280px; border:1px solid #ddd; border-radius:8px; overflow:hidden; background:#fff; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
@@ -14,3 +14,59 @@ body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f7f7f7; 
 body.theme-dark { background:#121217; color:#e6e6e6; }
 body.theme-dark .site-header { background:#0b0b0f; }
 body.theme-dark .event-card { background:#1b1b1f; border-color:#2b2b2f; }
+
+/* === Уведомления === */
+.notifications-container {
+  position: relative;
+  display: inline-block;
+}
+
+#notif-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.badge {
+  background: rgb(63, 2, 133);
+  color: rgb(255, 255, 255);
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.notif-dropdown {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  background: #ffffff;
+  border: 1px solid #8d8989;
+  width: 250px;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+  padding: 5px;
+  color: #222; /* <-- темный текст */
+}
+
+.notif-dropdown ul li {
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #222; /* <-- принудительно темный текст */
+}
+.notif-dropdown.hidden {
+  display: none;
+}
+
+.notif-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.notif-actions button {
+  font-size: 12px;
+  padding: 3px 6px;
+}
+

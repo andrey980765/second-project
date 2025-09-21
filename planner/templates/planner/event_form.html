@@ -1,0 +1,12 @@
+{% extends "planner/base.html" %}
+{% load static %}
+{% block title %}{{ action }}{% endblock %}
+{% block content %}
+  <h2>{{ action }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+  </form>
+  <a href="{% url 'planner:index' %}">← Назад</a>
+{% endblock %}

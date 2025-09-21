@@ -1,26 +1,105 @@
+{% load static %}
 <!doctype html>
 <html lang="{{ settings.language|default:'ru' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>EventPlanner</title>
-  <link rel="stylesheet" href="{% static 'planner/css/styles.css' %}">
+  <title>{% block title %}EventPlanner{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'planner/styles.css' %}">
 </head>
 <body class="theme-{{ settings.theme|default:'light' }}">
   <header class="site-header">
     <h1><a href="{% url 'planner:index' %}">EventPlanner</a></h1>
     <nav>
-      <a href="{% url 'planner:index' %}">События</a> |
-      <a href="{% url 'planner:settings' %}">Настройки</a>
+      {% if settings.language == 'ru' %}
+        <a href="{% url 'planner:index' %}">Главная</a> |
+        <a href="{% url 'planner:event_create' %}">Создать событие</a> |
+        <a href="{% url 'planner:settings' %}">Настройки</a>
+      {% else %}
+        <a href="{% url 'planner:index' %}">Home</a> |
+        <a href="{% url 'planner:event_create' %}">Create Event</a> |
+        <a href="{% url 'planner:settings' %}">Settings</a>
+      {% endif %}
     </nav>
+
+    <div class="notifications-container">
+  <button id="notif-btn">
+    🔔 <span id="notif-count" class="badge">0</span>
+  </button>
+  <div id="notif-dropdown" class="notif-dropdown hidden">
+    <ul id="notif-list"></ul>
+    <div class="notif-actions">
+      <button id="mark-all-seen">Отметить все как прочитанные</button>
+      <button id="delete-all">Удалить все</button>
+    </div>
+  </div>
+</div>
   </header>
 
   <main>
     {% block content %}{% endblock %}
   </main>
 
-  <footer>
-    <small>EventPlanner — демонстрационный проект</small>
-  </footer>
+  <footer><small></small></footer>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const notifBtn = document.getElementById("notif-btn");
+      const notifDropdown = document.getElementById("notif-dropdown");
+      const notifList = document.getElementById("notif-list");
+      const notifCount = document.getElementById("notif-count");
+
+      function loadNotifications() {
+          fetch("{% url 'planner:notifications_list' %}")
+              .then(r => r.json())
+              .then(data => {
+                  notifCount.textContent = data.count;
+                  notifList.innerHTML = "";
+                  if (data.items.length === 0) {
+                      notifList.innerHTML = "<li>Нет уведомлений</li>";
+                  } else {
+                      data.items.forEach(n => {
+                          const li = document.createElement("li");
+                          li.textContent = n.message + " (" + n.created_at + ")";
+                          notifList.appendChild(li);
+                      });
+                  }
+              });
+      }
+
+    // показать/скрыть dropdown
+    notifBtn.addEventListener("click", function () {
+        notifDropdown.classList.toggle("hidden");
+    });
+
+    // отметить все как прочитанные
+    document.getElementById("mark-all-seen").addEventListener("click", function () {
+        fetch("{% url 'planner:notifications_mark_seen' %}", {
+            method: "POST",
+            headers: {"X-CSRFToken": "{{ csrf_token }}"}
+        }).then(() => {
+            notifCount.textContent = "0";
+            loadNotifications();
+        });
+    });
+
+    // удалить все
+    document.getElementById("delete-all").addEventListener("click", function () {
+        fetch("{% url 'planner:notifications_delete_all' %}", {
+            method: "POST",
+            headers: {"X-CSRFToken": "{{ csrf_token }}"}
+        }).then(() => {
+            notifCount.textContent = "0";
+            notifList.innerHTML = "<li>Нет уведомлений</li>";
+        });
+    });
+
+    // первый запуск + автообновление каждые 30 сек
+    loadNotifications();
+    setInterval(loadNotifications, 30000);
+});
+</script>
+
+  {% block scripts %}{% endblock %}
 </body>
 </html>

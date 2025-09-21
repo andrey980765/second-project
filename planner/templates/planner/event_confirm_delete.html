@@ -1,0 +1,12 @@
+{% extends "planner/base.html" %}
+{% load static %}
+{% block title %}Удалить событие{% endblock %}
+{% block content %}
+  <h2>Удалить событие</h2>
+  <p>Вы действительно хотите удалить событие: <strong>{{ event.title }}</strong> ?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'planner:event_detail' event.pk %}">Отменить</a>
+  </form>
+{% endblock %}
