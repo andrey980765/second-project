@@ -132,31 +132,4 @@ def mark_all_read(request):
         return JsonResponse({"status": "ok", "unread_count": 0})
     return JsonResponse({"status": "error"})
 
-# ---- notification endpoints
-def notifications_list(request):
-    notifs = Notification.objects.filter(seen=False).order_by('-created_at')[:20]
-    data = [{'id': n.id, 'message': n.message, 'created_at': n.created_at.strftime('%Y-%m-%d %H:%M')} for n in notifs]
-    return JsonResponse({'count': notifs.count(), 'items': data})
-
-def notifications_poll(request):
-    return notifications_list(request)
-
-def notifications_mark_seen(request):
-    if request.method == 'POST':
-        ids = request.POST.getlist('ids[]')
-        Notification.objects.filter(id__in=ids).update(seen=True)
-        return JsonResponse({'ok': True})
-    return JsonResponse({'ok': False}, status=400)
-
-def notifications_delete_all(request):
-    """Удалить все уведомления"""
-    Notification.objects.all().delete()
-    return JsonResponse({'ok': True})
-
-def mark_all_read(request):
-    if request.method == "POST":
-        Notification.objects.filter(read=False).update(read=True)
-        return JsonResponse({"status": "ok", "unread_count": 0})
-    return JsonResponse({"status": "error"})
-
 
